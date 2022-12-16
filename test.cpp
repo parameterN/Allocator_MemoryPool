@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include "allocator.hpp"
 using namespace std;
 //先熟悉一下提供的allocator用法
 int main(int argc, char const *argv[])
