@@ -5,7 +5,8 @@ using namespace std;
 //先熟悉一下提供的allocator用法
 int main(int argc, char const *argv[])
 {
-    allocator<int> a;
+    // allocator<int> a;
+    MyAllocator<int> a;
     int *ptr=a.allocate(5);
     a.construct(ptr,3);
     a.construct(ptr+1,-3);
