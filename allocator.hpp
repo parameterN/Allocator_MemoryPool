@@ -1,14 +1,7 @@
 #ifndef _MY_ALLOCATOR
 #define _MY_ALLOCATOR
 #include<iostream>
-
-#define POOL_SIZE 1000
-
-template <class T>
-struct Alloc_Bin
-{
-    
-};
+#include"mempool.hpp"
 
 template <class T>
 class myAllocator
@@ -25,7 +18,8 @@ public:
     // typedef true_type propagate_on_container_move_assignment;
     // typedef true_type is_always_equal;
 
-private:
+public:
+    static MemPool * mempool;
 
 public:
     myAllocator() noexcept{}
@@ -38,13 +32,14 @@ public:
     // const_pointer address(const_reference _Val) const noexcept;
     void deallocate(pointer _Ptr, size_type _Count)
     {
-    ::operator delete(_Ptr);
+    // ::operator delete(_Ptr);
+        this->mempool->Deallocate(_Ptr,_Count*sizeof(T));
     }
 
     pointer allocate(size_type _Count)
     {
-    // std::cout << "My allocate " << _Count << std::endl;
-	return static_cast<T*>(::operator new(_Count * sizeof(T)));
+	// return static_cast<T*>(::operator new(_Count * sizeof(T)));
+    return static_cast<T*>(this->mempool->Allocate(_Count*sizeof(T)));
     }
 
     template<class U> void destroy(U *_Ptr){_Ptr->~U();}
