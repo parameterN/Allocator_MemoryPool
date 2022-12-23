@@ -2,8 +2,16 @@
 #define _MY_ALLOCATOR
 #include<iostream>
 
+#define POOL_SIZE 1000
+
 template <class T>
-class MyAllocator
+struct Alloc_Bin
+{
+    
+};
+
+template <class T>
+class myAllocator
 {
 public:
     typedef void _Not_user_specialized;
@@ -17,53 +25,35 @@ public:
     // typedef true_type propagate_on_container_move_assignment;
     // typedef true_type is_always_equal;
 
+private:
+
 public:
-    MyAllocator() noexcept;
-    MyAllocator( const MyAllocator& other ) noexcept;
+    myAllocator() noexcept{}
+    myAllocator( const myAllocator& other ) noexcept{}
     // template< class U >
-    // allocator( const MyAllocator<U>& other ) noexcept;
-    ~MyAllocator();
+    // allocator( const myAllocator<U>& other ) noexcept;
+    ~myAllocator(){}
 
     // pointer address(reference _Val) const noexcept;
     // const_pointer address(const_reference _Val) const noexcept;
-    void deallocate(pointer _Ptr, size_type _Count);
-    pointer allocate(size_type _Count);
-    template<class U> void destroy(U *_Ptr);
+    void deallocate(pointer _Ptr, size_type _Count)
+    {
+    ::operator delete(_Ptr);
+    }
+
+    pointer allocate(size_type _Count)
+    {
+    // std::cout << "My allocate " << _Count << std::endl;
+	return static_cast<T*>(::operator new(_Count * sizeof(T)));
+    }
+
+    template<class U> void destroy(U *_Ptr){_Ptr->~U();}
     template< class U, class... Args >
-    // void construct( U* p, Args&&... args );
-    void construct( U* p,const Args&... args );
+
+    void construct( U* p,Args&&... args )
+    {
+    ::new((void *)p) U(std::forward<Args>(args)...);
+    }
 };
 
-template <class T>
-MyAllocator<T>::MyAllocator() noexcept{}
-template <class T>
-MyAllocator<T>::MyAllocator( const MyAllocator& other ) noexcept{}
-template <class T>
-MyAllocator<T>::~MyAllocator(){}
-template <class T>
-void MyAllocator<T>::deallocate(pointer _Ptr, size_type _Count)
-{
-    ::operator delete(_Ptr);
-}
-template <class T>
-typename MyAllocator<T>::pointer MyAllocator<T>::allocate(size_type _Count)
-{
-    std::cout << "My allocate " << _Count << std::endl;
-	return static_cast<T*>(::operator new(_Count * sizeof(T)));
-}
-template<class T>
-template<class U>
-void MyAllocator<T>::destroy(U *_Ptr){_Ptr->~U();}
-
-template<class T>
-template< class U, class... Args >
-// void MyAllocator<T>::construct( U* p, Args&&... args )
-// {
-//    ::new((void *)p) U(std::forward<Args>(args)...);
-// }
-void MyAllocator<T>::construct( U* p,const Args&... args )
-{
-    std::cout << "My construct" << std::endl;
-   ::new((void *)p) U(args...);
-}
 #endif
