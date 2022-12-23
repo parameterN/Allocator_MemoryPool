@@ -41,7 +41,7 @@ public:
     {
         int block_num = Block_Num(size);
         if(block_num >= POOL_WIDTH){return ::operator new(size);}
-        if(block_num > Free_Num){cout << "Memory pool is exhausted!" << endl;return NULL;}
+        //if(block_num > Free_Num){cout << "Memory pool is exhausted!" << endl;return NULL;}
         if(Divided_Pool[block_num-1]!=NULL)
         {
             void * ptr = Divided_Pool[block_num-1];

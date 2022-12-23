@@ -44,7 +44,6 @@ public:
 
     template<class U> void destroy(U *_Ptr){_Ptr->~U();}
     template< class U, class... Args >
-
     void construct( U* p,Args&&... args )
     {
     ::new((void *)p) U(std::forward<Args>(args)...);
