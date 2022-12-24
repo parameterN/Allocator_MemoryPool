@@ -1,8 +1,8 @@
 #include <iostream>
-#include <random>
-#include <vector>
-#include<time.h>
 #include "allocator.hpp"
+#include <random>
+#include<time.h>
+#include <vector>
 // include header of your allocator here
 template<class T>
 using MyAllocator = myAllocator<T>; // replace the std::allocator with your allocator
@@ -10,6 +10,7 @@ template<class T>
 using Allocator = std::allocator<T>; // replace the std::allocator with your allocator
 using Point2D = std::pair<int, int>;
 
+const int numsize = 10000;
 const int TestSize = 10000;
 const int PickSize = 1000;
 
@@ -24,7 +25,7 @@ int main()
 {
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dis(1, TestSize);
+  std::uniform_int_distribution<> dis(1, numsize);
 
   start = clock();
 
