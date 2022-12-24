@@ -3,9 +3,9 @@
 
 #include <iostream>
 
-#define BLOCK_SIZE (sizeof(void*)*10)
+#define BLOCK_SIZE (sizeof(void*)*50)
 #define POOL_SIZE 1000000
-#define POOL_WIDTH 100
+#define POOL_WIDTH 1000
 
 typedef struct node
 {
@@ -61,6 +61,13 @@ public:
     {
         int block_num = Block_Num(size);
         if(block_num > POOL_SIZE/10){return ::operator new(size);}
+        if(block_num <= POOL_WIDTH && Divided_Pool[block_num-1]!=NULL)
+        {
+            void * ptr = Divided_Pool[block_num-1];
+            Divided_Pool[block_num-1] =
+            static_cast<void *>(*(static_cast<int **>(Divided_Pool[block_num-1])));
+            return ptr;
+        }
         if(block_num > Free_Num)
         {
             Trace_Head->Next = new Pool_Head;
@@ -68,13 +75,6 @@ public:
             /*divide*/
             Trace = Trace_Head->Head;
             Free_Num = POOL_SIZE;
-        }
-        if(block_num <= POOL_WIDTH && Divided_Pool[block_num-1]!=NULL)
-        {
-            void * ptr = Divided_Pool[block_num-1];
-            Divided_Pool[block_num-1] =
-            static_cast<void *>(*(static_cast<int **>(Divided_Pool[block_num-1])));
-            return ptr;
         }
             void * ptr = Trace;
             Free_Num -= block_num;
