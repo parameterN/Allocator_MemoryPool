@@ -91,7 +91,6 @@ namespace std{
 				myAllocator<_Tp>&)
     { return std::__uninitialized_default_n(__first, __n); }
 
-
   template<typename _ForwardIterator, typename _Tp>
     inline void
     _Destroy(_ForwardIterator __first, _ForwardIterator __last,

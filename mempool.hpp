@@ -4,8 +4,8 @@
 #include <iostream>
 
 #define BLOCK_SIZE (sizeof(void*)*10)
-#define POOL_SIZE 100000
-#define POOL_WIDTH 1000
+#define POOL_SIZE 1000000
+#define POOL_WIDTH 100
 
 typedef struct node
 {
@@ -14,7 +14,7 @@ typedef struct node
     node()
     {
         Head = ::operator new(BLOCK_SIZE * POOL_SIZE);
-        // if(Head ==NULL) 
+        // if(Head == NULL) 
         // std::cout << "Out of memory" << std::endl;
         Next = NULL;
     }
@@ -46,7 +46,7 @@ public:
         while(Undivided_Pool != NULL)
         {
             Trace_Head = Undivided_Pool->Next;
-            Undivided_Pool->~node();
+            delete Undivided_Pool;
             Undivided_Pool = Trace_Head;
         } 
     }
