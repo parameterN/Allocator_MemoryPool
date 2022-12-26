@@ -22,14 +22,14 @@ public:
     typedef std::true_type propagate_on_container_move_assignment;
     typedef std::true_type is_always_equal;
     template<typename _Tp1>
-	  struct rebind
+	  struct rebind/* turn type void into specialized data type */
 	  { typedef myAllocator<_Tp1> other; };
 public:
     static MemPool * mempool;
 
 public:
-    myAllocator() noexcept{}
-    myAllocator( const myAllocator& other ) noexcept{}
+    myAllocator() noexcept{} /* never throw an exception */
+    myAllocator( const myAllocator& other ) noexcept{}/* copy ctor */
     template< class U >
     myAllocator( const myAllocator<U>& other ) noexcept{}
     ~myAllocator(){}
@@ -38,23 +38,20 @@ public:
     {return std::__addressof(_Val);}
     const_pointer address(const_reference _Val) const noexcept
     {return std::__addressof(_Val);}
-    void deallocate(pointer _Ptr, size_type _Count)
+    void deallocate(pointer _Ptr, size_type _Count) /* use the deallocating function in mempool part */
     {
-      // ::operator delete(_Ptr);
       this->mempool->Deallocate(_Ptr,_Count*sizeof(T));
     }
-
     pointer allocate(size_type _Count)
     {
-	    // return static_cast<T*>(::operator new(_Count * sizeof(T)));
-      return static_cast<T*>(this->mempool->Allocate(_Count*sizeof(T)));
+      return static_cast<T*>(this->mempool->Allocate(_Count*sizeof(T))); /* use the function in allocater of mempool */
     }
 
     template<class U> void destroy(U *_Ptr){_Ptr->~U();}
     template< class U, class... Args >
     void construct( U* p,Args&&... args )
     {
-    ::new((void *)p) U(std::forward<Args>(args)...);
+    ::new((void *)p) U(std::forward<Args>(args)...);  /* multiple parameters */
     }
 };
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "allocator.hpp"
 #include <random>
-#include<time.h>
+#include <time.h>
 #include <vector>
 // include header of your allocator here
 template<class T>
@@ -76,7 +76,7 @@ int main()
   total = ((double)(stop - start))/CLK_TCK;
   std::cout << "mempool: " << total << std::endl;
   
-  //________________________________________________________________
+  //-----------------------------------------------------------------
   start = clock();
 
   // vector creation
