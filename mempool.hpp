@@ -5,7 +5,7 @@
 
 #define BLOCK_SIZE (sizeof(void*)*10) /* 80 in 64 bit operating system */
 #define POOL_SIZE 1000000 /* maximal pool size for allocating */
-#define POOL_WIDTH 10000 /* the maximal blocks that the free_list can manage */
+#define POOL_WIDTH 100000 /* the maximal blocks that the free_list can manage */
 
 /* the struct to maintain a large consecutive block of memory */
 typedef struct node
@@ -89,7 +89,7 @@ public:
     void Deallocate(void * ptr,size_t size)
     {
         int block_num = Block_Num(size);
-        if(block_num > POOL_SIZE/10){::operator delete(ptr);return;}
+        //if(block_num > POOL_SIZE/10){::operator delete(ptr);return;}
         if(block_num > POOL_WIDTH)return;//Unable to manage
         int ** p = static_cast<int **>(ptr);/* force to turn to int** type */
         *p = static_cast<int *>(Divided_Pool[block_num-1]);
