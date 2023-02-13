@@ -89,7 +89,7 @@ public:
     void Deallocate(void * ptr,size_t size)
     {
         int block_num = Block_Num(size);
-        //if(block_num > POOL_SIZE/10){::operator delete(ptr);return;}
+        // if(block_num > POOL_SIZE/10){::operator delete(ptr);return;}
         if(block_num > POOL_WIDTH)return;//Unable to manage
         int ** p = static_cast<int **>(ptr);/* force to turn to int** type */
         *p = static_cast<int *>(Divided_Pool[block_num-1]);
